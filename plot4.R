@@ -2,14 +2,15 @@ plot4 <- function(thesource="household_power_consumption.txt") {
       #import and subset data
       df <- read.table(thesource,header = TRUE,sep = ";",na.strings = "?",stringsAsFactors = FALSE)
       subdf <- subset(df,df[,"Date"]=="1/2/2007"|df[,"Date"]=="2/2/2007")
-      #Set up canvas as 2x2
-      par(mfrow=c(2,2))
       #Function to streamline axes creation and border boxes
       drawBox <- function() {
             axis(1,at=c(1,nrow(subdf)/2,nrow(subdf)),labels = c("Thu","Fri","Sat"))
             axis(2)
             box()
       }
+      #Set up canvas as 2x2
+      png(filename = "plot4.png", width = 480, height = 480)
+      par(mfrow=c(2,2))
       #Graph 1
       plot.ts(subdf[,"Global_active_power"],axes=FALSE,xlab=NULL,ylab='Global Active Power')
       drawBox()
@@ -27,6 +28,5 @@ plot4 <- function(thesource="household_power_consumption.txt") {
       plot.ts(subdf[,"Global_reactive_power"],axes=FALSE,xlab='datetime',ylab='Global_reactive_power')
       drawBox()
       #Export
-      dev.copy(png,'plot4.png')
       dev.off()
 }
